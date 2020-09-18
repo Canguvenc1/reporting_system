@@ -28,4 +28,10 @@ public class ExcelDataHeader {
     public void setWidth(int width) {
         this.width = width;
     }
+
+    //Printing class information to increase the code quality by overriding the toString() method, so that we can provide meaningful output.
+    @Override
+    public String toString() {
+        return " Name data: " + name + " Type data: " + type + " Width data: " + width ;
+    }
 }

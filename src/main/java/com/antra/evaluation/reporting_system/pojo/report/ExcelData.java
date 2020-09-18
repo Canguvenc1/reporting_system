@@ -8,6 +8,7 @@ public class ExcelData {
     private LocalDateTime generatedTime;
     private List<ExcelDataSheet> sheets;
 
+
     public String getTitle() {
         return title;
     }
@@ -30,5 +31,11 @@ public class ExcelData {
 
     public void setSheets(List<ExcelDataSheet> sheets) {
         this.sheets = sheets;
+    }
+
+    //Printing class information to increase the code quality by overriding the toString() method, so that we can provide meaningful output.
+    @Override
+    public String toString() {
+        return " Title data: " + title + " Generated Time data " + generatedTime + " Sheets: " + sheets;
     }
 }

@@ -6,7 +6,15 @@ import java.util.List;
 public class ExcelDataSheet {
     private String title;
     private List<ExcelDataHeader> headers;
-    private List<List<Object>> dataRows;
+    private List<List<Object>> rows;
+
+    public List<List<Object>> getRows() {
+        return rows;
+    }
+
+    public void setRows(List<List<Object>> rows) {
+        this.rows = rows;
+    }
 
     public String getTitle() {
         return title;
@@ -24,11 +32,17 @@ public class ExcelDataSheet {
         this.headers = headers;
     }
 
-    public List<List<Object>> getDataRows() {
+
+    /*public List<List<Object>> getDataRows() {
         return dataRows;
     }
 
     public void setDataRows(List<List<Object>> dataRows) {
         this.dataRows = dataRows;
+    }*/
+    //Printing class information to increase the code quality by overriding the toString() method, so that we can provide meaningful output.
+    @Override
+    public String toString() {
+        return " Title data: " + title + " Headers: " + headers + " Rows data: " + rows;
     }
 }

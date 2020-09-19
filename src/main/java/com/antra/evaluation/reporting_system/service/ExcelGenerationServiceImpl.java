@@ -40,7 +40,7 @@ public class ExcelGenerationServiceImpl implements ExcelGenerationService {
             }
             if(sheet.getHeaders() != null) {
                 int columns = sheet.getHeaders().size();
-                for (List<Object> dataRow : sheet.getDataRows()) {
+                for (List<Object> dataRow : sheet.getRows()) {
                     if (dataRow.size() != columns) {
                         throw new RuntimeException("Excel Data Error: sheet data has difference length than header number");
                     }
@@ -80,7 +80,7 @@ public class ExcelGenerationServiceImpl implements ExcelGenerationService {
                 headerCell.setCellValue(headerData.getName());
                 headerCell.setCellStyle(headerStyle);
             }
-            var rowData = sheetData.getDataRows();
+            var rowData = sheetData.getRows();
             for (int i = 0; i < rowData.size(); i++) {
                 Row row = sheet.createRow(1 + i);
                 var eachRow = rowData.get(i);
@@ -104,7 +104,11 @@ public class ExcelGenerationServiceImpl implements ExcelGenerationService {
 
         File currDir = new File(".");
         String path = currDir.getAbsolutePath();
-        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";  // TODO : file name cannot be hardcoded here
+        String fileName=String.valueOf(data.getGeneratedTime());
+        fileName=fileName.replace(":","-");
+        fileName=fileName.replace(".","-");
+        fileName=fileName.replace(" ","-");
+        String fileLocation = path.substring(0, path.length() - 1) + fileName+".xlsx";  // TODO : file name cannot be hardcoded here
 
         FileOutputStream outputStream = new FileOutputStream(fileLocation);
         workbook.write(outputStream);

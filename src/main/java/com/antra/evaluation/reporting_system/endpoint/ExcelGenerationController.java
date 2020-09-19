@@ -48,11 +48,11 @@ public class ExcelGenerationController {
     public ResponseEntity<ExcelResponse> createExcel(@RequestBody @Validated ExcelRequest request) throws IOException {
         ExcelResponse response = new ExcelResponse();
         if(!logError.checkRequest(request).equals("")){
-            log.error(logError.checkRequest(request));
+            log.error(logError.checkRequest(request));// Log
         }if(request.getHeaders()!=null && request.getData()!=null){
             ExcelFile excelFile=excelService.create(request);
             excelService.saveToRepo(excelFile);
-            log.info("File created");
+            log.info("File created");// Log
             response.setFileId(excelFile.getFileName());
             response.setExcelFile(excelFile);
         }
@@ -74,11 +74,11 @@ public class ExcelGenerationController {
         ExcelResponse response = new ExcelResponse();
 
         if(!logError.checkMultiRequest(request).equals("")){
-            log.error(logError.checkMultiRequest(request));
+            log.error(logError.checkMultiRequest(request));// Log
         }if(request.getHeaders()!=null && request.getData()!=null && request.getSplitBy()!=null){
             ExcelFile excelFile= excelService.multiCreate(request);
             excelService.saveToRepo(excelFile);
-            log.info("File created");
+            log.info("File created");// Log
             response.setFileId(excelFile.getFileName());
             response.setExcelFile(excelFile);
 
@@ -96,9 +96,9 @@ public class ExcelGenerationController {
     @ApiOperation("List all existing files")
     public ResponseEntity<List<ExcelResponse>> listExcels() {
         var response = new ArrayList<ExcelResponse>();
-        response= (ArrayList<ExcelResponse>) excelService.showRepo(response);
+        response= (ArrayList<ExcelResponse>) excelService.showRepo();
         if(response.isEmpty()){
-            log.info("Empty repository");
+            log.info("Empty repository");// Log
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -112,9 +112,9 @@ public class ExcelGenerationController {
     @GetMapping("/excel/{id}/content")
     public void downloadExcel(@PathVariable String id, HttpServletResponse response) throws IOException {
         String name=id+".xlsx";
-        System.out.println(name);
+
         InputStream fis;
-        try{
+        try{// Exception handling
             fis = excelService.getExcelBodyById(id);
             response.setHeader("Content-Type","application/vnd.ms-excel");
             response.setHeader("Content-Disposition","attachment; filename="+name); // TODO: File name cannot be hardcoded here

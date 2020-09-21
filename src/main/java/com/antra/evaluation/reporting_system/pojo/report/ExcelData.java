@@ -2,12 +2,30 @@ package com.antra.evaluation.reporting_system.pojo.report;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 public class ExcelData {
     private String title;
     private LocalDateTime generatedTime;
     private List<ExcelDataSheet> sheets;
+    private String name;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void createName(){
+        Random random = new Random();
+        String extension= String.valueOf(random.nextInt(Integer.MAX_VALUE));
+        String fileName=String.valueOf(getGeneratedTime())+extension; ;
+        fileName=fileName.replace(":","-");
+        fileName=fileName.replace(".","-");
+        fileName=fileName.replace(" ","-");
+        this.name=fileName;
+    }
 
     public String getTitle() {
         return title;

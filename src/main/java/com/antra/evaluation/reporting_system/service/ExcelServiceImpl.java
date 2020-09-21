@@ -9,6 +9,8 @@ import com.antra.evaluation.reporting_system.pojo.report.ExcelDataSheet;
 import com.antra.evaluation.reporting_system.repo.ExcelRepository;
 import com.antra.evaluation.reporting_system.pojo.report.ExcelFile;
 import com.antra.evaluation.reporting_system.repo.ExcelRepositoryImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,7 @@ public class ExcelServiceImpl implements ExcelService {
 
     @Autowired
     ExcelRepository excelRepository;
+    private static final Logger log = LoggerFactory.getLogger(ExcelServiceImpl.class);
 
     public ExcelServiceImpl() {
         this.excelRepository = new ExcelRepositoryImpl();
@@ -38,13 +41,13 @@ public class ExcelServiceImpl implements ExcelService {
         String projectFolderStr = System.getProperty("user.dir");
         ExcelResponse response=new ExcelResponse();
         if(excelFile!=null){
-            System.out.println("File deleted from database");
+            log.info("File deleted from database");
             String fileName=projectFolderStr+"\\"+excelFile.getFileName()+".xlsx".toString();
             try{
                 File file=new File(fileName);
                 file.delete();
             } catch(Exception exception){
-                System.out.println("Files doesn't exist or in use for deleting from local");
+                log.error("Files doesn't exist or in use for deleting from local");
             }
             response.setFileId(excelFile.getFileName());
         }
@@ -117,13 +120,10 @@ public class ExcelServiceImpl implements ExcelService {
         excelData.setSheets(sheets);
         excelData.setGeneratedTime(LocalDateTime.now());
 
-        String fileName = String.valueOf(excelData.getGeneratedTime());
-        fileName=fileName.replace(":","-");
-        fileName=fileName.replace(".","-");
-        fileName=fileName.replace(" ","-");
+        excelData.createName();
 
         ExcelFile excelFile=new ExcelFile();
-        excelFile.setFileName(fileName);
+        excelFile.setFileName(excelData.getName());
         excelFile.setSubmitter(request.getSubmitter());
 
         try{
@@ -131,7 +131,7 @@ public class ExcelServiceImpl implements ExcelService {
             ExcelGenerationService excelGenerationServiceImpl=new ExcelGenerationServiceImpl();
             excelGenerationServiceImpl.generateExcelReport(excelData);
         }catch (Exception e){
-            System.out.println("File creation unsuccessfull");
+            log.error("File creation unsuccessfull");
         }
 
 
@@ -193,13 +193,11 @@ public class ExcelServiceImpl implements ExcelService {
 
         excelData.setSheets(sheets);
         excelData.setGeneratedTime(LocalDateTime.now());
-        String fileName = String.valueOf(excelData.getGeneratedTime());
-        fileName=fileName.replace(":","-");
-        fileName=fileName.replace(".","-");
-        fileName=fileName.replace(" ","-");
+
+        excelData.createName();
 
         ExcelFile excelFile=new ExcelFile();
-        excelFile.setFileName(fileName);
+        excelFile.setFileName(excelData.getName());
         excelFile.setSubmitter(request.getSubmitter());
 
         ExcelGenerationService excelGenerationServiceImpl=new ExcelGenerationServiceImpl();
@@ -225,3 +223,4 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
 }
+

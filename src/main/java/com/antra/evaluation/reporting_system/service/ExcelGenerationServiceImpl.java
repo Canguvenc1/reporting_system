@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Data Stucture
@@ -104,11 +105,9 @@ public class ExcelGenerationServiceImpl implements ExcelGenerationService {
 
         File currDir = new File(".");
         String path = currDir.getAbsolutePath();
-        String fileName=String.valueOf(data.getGeneratedTime());
-        fileName=fileName.replace(":","-");
-        fileName=fileName.replace(".","-");
-        fileName=fileName.replace(" ","-");
-        String fileLocation = path.substring(0, path.length() - 1) + fileName+".xlsx";  // TODO : file name cannot be hardcoded here
+
+
+        String fileLocation = path.substring(0, path.length() - 1) + data.getName()+".xlsx";  // TODO : file name cannot be hardcoded here
 
         FileOutputStream outputStream = new FileOutputStream(fileLocation);
         workbook.write(outputStream);
